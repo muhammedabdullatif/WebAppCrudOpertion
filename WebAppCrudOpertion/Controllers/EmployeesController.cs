@@ -41,7 +41,7 @@ namespace WebAppCrudOpertion.Controllers
                 return RedirectToAction(nameof(Index));
             }
             ViewBag.Departments =_context.Departments.OrderBy(x=>x.DepartmentName).ToList();
-           ViewBag
+           
             return View();
 
         }
@@ -56,7 +56,7 @@ namespace WebAppCrudOpertion.Controllers
             ViewBag.Departments = _context.Departments.OrderBy(x => x.DepartmentName).ToList();
             return View("Create", result);
         }
-
+        int y = 0;
         public void UploadImage(Employee model)
         {
             var file = HttpContext.Request.Form.Files;
