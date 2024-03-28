@@ -33,7 +33,7 @@ namespace WebAppCrudOpertion.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult Create(Employee model)
             {
-      
+            UploadImage(model);
             if (ModelState.IsValid)
             {
                 _context.Employees.Add(model);
@@ -45,17 +45,7 @@ namespace WebAppCrudOpertion.Controllers
             return View();
 
         }
-        public IActionResult Edit(int? id)
-        {
-            if (id == null)
-            {
-                return View();
-            }
-
-            var result = _context.Employees.Find(id);
-            ViewBag.Departments = _context.Departments.OrderBy(x => x.DepartmentName).ToList();
-            return View("Create", result);
-        }
+       
         int y = 0;
         public void UploadImage(Employee model)
         {
@@ -76,6 +66,42 @@ namespace WebAppCrudOpertion.Controllers
             {
                 model.ImageUser = model.ImageUser;
             }
+        }
+        public IActionResult Edit(int? id)
+        {
+            ViewBag.Departments = _context.Departments.OrderBy(x => x.DepartmentName).ToList();
+            var result = _context.Employees.Find(id);
+
+            return View("Create",result);
+
+        }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult Edit(Employee model)
+        {
+            UploadImage(model);
+            if (ModelState.IsValid)
+            {
+                _context.Employees.Update(model);
+                _context.SaveChanges();
+                return RedirectToAction("index");
+            }
+            ViewBag.Departments = _context.Departments.OrderBy(x => x.DepartmentName).ToList();
+            return View();
+        }
+        public IActionResult Delete(int? id)
+        {
+            
+            var result = _context.Employees.Find(id);
+            if(result!=null)
+            {
+                _context.Employees.Remove(result);
+                _context.SaveChanges();
+
+            }
+            return RedirectToAction("index");
+           
+
         }
     }
 }
